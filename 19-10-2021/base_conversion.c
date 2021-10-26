@@ -2,53 +2,63 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <string.h>
 
-/* input p,q,n
+typedef unsigned long long int ull;
+
+const unsigned kIoLen = 100; // input length
+
+/*  input: n,p,q
+ *  n - number in base of p
+ *  p - base of n
+ *  q - target base of n
+ *  
+ *  2 <= p,q <= 36
  *
- * n - number expressed in in base of p
- * q - base n is to be converted to
- *
+ *  output: n in base of q
  */
 
-
-typedef long long unsigned int llu;
-
-int convert_symbols(unsigned base, char *num_str, int *output) {
-    char c, mnc = base > 10 ? 'A' + (base - 11) : '0' + base - 1;    // maximum ASCII value for expressing a number
-    printf("\n%c\n", mnc);
-    while ((c = *(num_str++)) != '\0') {
-        if (c > mnc) {
+ull digits_to_num(unsigned base, char *n_str) {
+    char c;
+    unsigned power = strlen(n_str) - 1;
+    unsigned sv, msv = (base > 10) ? 'A' + (base - 11) : '0' + base - 1;
+    ull out = 0;
+    while ((c = *(n_str++)) != '\0') {
+        sv = (c - '0') > 10 ? c - 'A' + 10 : (c - '0');
+        if (sv > msv) {
             return 0;
         }
-        *(output++) = ((c - '0') > 10) ? c - 'A' + 10 : (c - '0');
+        out += sv * pow(base, power);
+        --power;
     }
-    *(output++) = -1;
+    return out;
+}
+
+int digits_to_new_base(unsigned base, ull num, char *out) {
+    if (base > 36) {
+        return -1;
+    }
+    char temp[kIoLen];
+    unsigned i = 0, r;
+    while (num > 0) {
+        temp[i++] = (r = num % base) > 10 ? 'A' + (r - 10) : '0' + r;
+        num /= base;
+    }
+    for (unsigned j = 0; j < i; ++j) {
+        out[i - 1 - j] = temp[j];
+    }
     return 1;
 }
 
-void print_converted_symbols(int *syms) {
-    int n;
-    while ((n = *(syms++)) >= 0) {
-        printf("%d ", n);
-    }
-    putchar('\n');
-}
-
-llu convert_to_dec(int base, int *syms) {
-    int n, pow;
-    llu output = 0;
-    while ((n = *(syms++)) >= 0) {
-        output += pow(
-    }
-}
-
 int main() {
-    unsigned base;
-    char num_str[30];
-    int nums[30];
-    scanf("%u %s", &base, num_str);
-    printf("%d, %s\n", base, num_str);
-    printf("%s", convert_symbols(base, num_str, nums) ? "true" : "false");
-    print_converted_symbols(nums);
-    return 0;
+    char n_str[kIoLen], out[kIoLen];
+    unsigned p, q;
+    printf("Enter a number (n) in source base (p) to convert it to target base (q). \
+            \n\rEach argument is seperated by one space\n\n");
+    scanf("%u %u %s", &p, &q, n_str);
+    ull num_repr = digits_to_num(p, n_str);
+    digits_to_new_base(q, num_repr, out);
+    printf("\n\n\tn in the base of %d: %s (%Lu in decimal)\n \
+            \r\tn in the base of %d: %s\n", 
+            p, n_str, num_repr, q, out);
 }
