@@ -1,5 +1,5 @@
 CC = gcc
-SRC = computing_pi.c
+SRC = base_conversion.c
 LIBS = -lm
 FLAGS = -xc -std=c11 -Wall -Wextra -Werror 
 OUT = out
