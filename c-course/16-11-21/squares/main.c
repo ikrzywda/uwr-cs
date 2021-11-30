@@ -1,47 +1,59 @@
 #include <stdio.h>
+#include <string.h>
 
-#define MAX_SQUARE_SIDE_LEN 11
+#define MAX_SQUARE_SIDE_LEN 1000
 
-typedef char SquareBuffer[MAX_SQUARE_SIDE_LEN][MAX_SQUARE_SIDE_LEN];
+typedef char SquareBuf[MAX_SQUARE_SIDE_LEN][MAX_SQUARE_SIDE_LEN];
 
-int read_side_len() {
-    int n;
-    scanf("%d", &n);
-    return (n % 2) ? n : -1;
-}
-
-void generate_template(SquareBuffer s, int n, int m) {
-    if (n < 1) return;
-    char c = (((n / 2) - 1) % 2) ? '#' : 'o';
-    for (int i = m - n; i < n; ++i) {
-        s[i][m-n] = c;
-        s[m-n][i] = c;
-        s[n-i-1][n-1] = c;
-        s[n-1][n-i-1] = c;
-    }
-    generate_template(s, n-2, m);
-}
-
-void print_template(SquareBuffer s, int n) {
-    for (int j = 0; j < MAX_SQUARE_SIDE_LEN; ++j) {
-        for (int i = 0; i < MAX_SQUARE_SIDE_LEN; ++i) {
-            if (s[j][i] != '#') {
-                putchar(' ');
-            } else {
-                putchar('#');
+void make_basic_square(int n, SquareBuf s) {
+    int offset = 0;
+    char filler = ((n/2)%2) ? 'o' : '#';
+    for (; n > 0; --n) {
+        for (int i = offset; i < n; ++i) {
+            for (int j = offset; j < n; ++j) {
+                s[i][j] = filler;
             }
         }
+        ++offset;
+        filler = (filler == '#') ? 'o' : '#';
+    }
+}
+
+void make_diagonals(int n, SquareBuf s) {
+    for (int i = 0; i < n; ++i) {
+        s[i][i] = '#';
+        s[i][n-i-1] = '#';
+    }
+}
+
+void print_square(SquareBuf s) {
+    int i = 0, j = 0;
+    while (i < MAX_SQUARE_SIDE_LEN) {
+        if (s[i][0] != '#' && s[i][0] != 'o') break;
+        while (s[i][j] == '#' || s[i][j] == 'o') {
+            putchar(s[i][j++]);
+        }
+        ++i;
+        j = 0;
         putchar('\n');
     }
 }
 
+void make_square(int n) {
+    SquareBuf s;
+    memset(s, 0, sizeof(s));
+    make_basic_square(n, s);
+    make_diagonals(n, s);
+    print_square(s);
+}
+
 int main() {
-    int n;
-    if ((n = read_side_len()) < 0) {
+    unsigned n;
+    scanf("%d", &n);
+    if (!(n % 2)) {
         printf("ERROR");
         return 0;
     }
-    SquareBuffer s;
-    generate_template(s, n, n);
-    print_template(s, n);
+    make_square(n);
+    return 0;
 }
