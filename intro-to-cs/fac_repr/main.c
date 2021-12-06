@@ -28,6 +28,7 @@ int g(int n) {
     return g_buf[3];
 }
 
+// zad 4 result 486
 int t_rec(int n, int m) {
     if (n >= 0 && !m) return n;
     if (!n && m >= 0) return m;
@@ -35,6 +36,7 @@ int t_rec(int n, int m) {
 }
 
 
+// zad 7 result 486
 int z2(int n, int m) {
     if (n == 1 && m > 1) return -1;
     int i = 0;
@@ -54,4 +56,5 @@ int main() {
         printf("n = %d, m = %d, k = %d, n^k = %d n^(k-1) = %d\t n^(k-1) > n: %s\n", n, m, k, (int)pow(n,k), (int)pow(n,k-1),
                 ((int)(pow(n,k-1)) > n) ? "False" : "True");
     }
+    printf("\n\n%d", t_rec(3,4));
 }
