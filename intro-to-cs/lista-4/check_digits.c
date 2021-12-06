@@ -2,6 +2,12 @@
 
 typedef unsigned DigitRef[11];
 
+/*
+ *  Ex. 7
+ *  time complexity: O(log(n))
+ *  space complexity: O(1)
+ */
+
 void check_digits(unsigned n) {
     int used_digits[11] = {0}, udc = 0;
     int d;
@@ -17,6 +23,12 @@ void check_digits(unsigned n) {
     }
     printf("%d\n", udc);
 }
+
+/*
+ *  Ex. 8
+ *  time complexity: log(m) + log(n) = O(log(nm))
+ *  space complexity: O(1)
+ */
 
 void get_digits_arity(unsigned n, DigitRef r) {
     int d;
@@ -50,5 +62,6 @@ int main() {
     check_digits(1234567890);
     are_similar(123412, 11234);
     are_similar(123412, 223411);
+    are_similar(110, 101);
     return 0;
 }
