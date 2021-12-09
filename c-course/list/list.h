@@ -21,6 +21,7 @@ void print_back(Node *head);
 bool pop_front(Node **head, double *result);
 bool pop_back(Node **head, double *result);
 unsigned length(Node *head);
-bool insert(Node **head, double val, unsigned index);
+Node *merge(Node *l1, Node *l2);
+Node *cpy(Node *head);
 
 #endif

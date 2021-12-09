@@ -120,19 +120,24 @@ unsigned length(Node *head) {
     return len;
 }
 
-bool insert(Node **head, double val, unsigned index) {
-    unsigned len = length(*head);
-    if (!len || index > len) {
-        return false;
-    }
-    Node *temp = *head;
-    Node *new_node = init(val);
-    for (int i = 0; i < index; ++i) {
-        temp = temp->next;
-    }
-    new_node->prev = temp->prev;
-    new_node->next = temp->next;
-    (temp->next)->prev = new_node;
-    temp->next = new_node;
-    return true;
+Node *merge(Node *l1, Node *l2) {
+    Node *tmp = l1->prev;
+    (l1->prev)->next = l2;
+    (l2->prev)->next = l1;
+    l1->prev = l2->prev;
+    l2->prev = tmp;
+    return l1;
+}
+
+Node *cpy(Node *head) {
+    int l = length(head);
+    if (!l) return NULL;
+    Node *start = head;
+    Node *n = head;
+    Node *new_list;
+    do {
+        append(&new_list, n->info);
+        n = n->next;
+    } while (n != start);
+    return new_list;
 }
