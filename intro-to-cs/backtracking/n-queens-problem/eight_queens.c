@@ -44,7 +44,7 @@ int queens_count() {
     while (k >= 0) {
         if (k == n) {
             count++;
-            chess_board[--k]++;
+            --k;
             print_chessboard();
         }
         do {
