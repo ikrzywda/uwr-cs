@@ -58,7 +58,7 @@ List *merge_lists(List *l1, List **l2) {
 
     l1->tail->next = (*l2)->head;
     (*l2)->head = NULL;
-    (*l2)->tail = NULL;
+    l1->tail = (*l2)->tail;
     free(*l2);
     *l2 = NULL;
 
@@ -76,5 +76,7 @@ int main() {
     print_list(n2->head);
 
     n = merge_lists(n, &n2);
+    print_list(n->head);
+    n = append(n, 312);
     print_list(n->head);
 }
