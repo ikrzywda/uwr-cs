@@ -45,27 +45,32 @@ void insert(Node **list, int val) {
 
 }
 
+// ex. 10
 Node *merge_in_order(Node *l1, Node **l2) {
-    if (*l2 == NULL) return l1;
 
-    Node *temp2 = *l2, *temp1 = l1, *temp3;
+    if (l1 == NULL) return *l2;
 
-    while (temp2 != NULL) {
-        temp1 = l1;
-        temp3 = temp2;
-        temp2 = temp2->next;
-        if (temp1->value >= temp3->value) {
-            temp3->next = temp1;
+    Node *ins_node = *l2, *ins_node_t, *temp = l1;
+
+    while (ins_node->next != NULL) {
+        ins_node_t = ins_node;
+        ins_node = ins_node->next;
+
+        if (temp->value >= ins_node->value) {
+            ins_node_t->next = temp;
+            l1 = ins_node_t;
         } else {
-            while (temp1->next != NULL && temp1->value > temp3->value) {
-                temp1 = temp1->next;
+            while (temp->next != NULL && temp->next->value < ins_node_t->value) {
+                temp = temp->next;
             }
-            temp1->next = temp3->next;
-            temp3->next = temp1;
+            ins_node_t->next = temp->next;
+            temp->next = ins_node_t; 
         }
+        temp = l1;
     }
-    
+
     *l2 = NULL;
+
     return l1;
 }
 
@@ -82,6 +87,6 @@ int main() {
     putchar('\n');
     print_list(n);
     print_list(n2);
-    merge_in_order(n, &n2);
+    n = merge_in_order(n, &n2);
     print_list(n);
 }

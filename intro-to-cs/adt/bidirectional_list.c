@@ -25,12 +25,12 @@ Node *init_node(int val) {
     return n;
 }
 
-void append(Node **list, int val) {
+Node *enqueue(Node *list, int val) {
     Node *new_node = init_node(val);
-    Node *l = *list;
+    Node *l = list;
 
-    if (*list == NULL) {
-        *list = new_node;
+    if (list == NULL) {
+        return new_node;
     }
     
     while (l->next != NULL) {
@@ -38,16 +38,15 @@ void append(Node **list, int val) {
     }
     new_node->prev = l;
     l->next = new_node;
+    return list;
 }
 
-int pop_front(Node **list) {
-    Node *temp = *list;
-    int val;
-    *list = (*list)->next;
-    (*list)->prev = NULL;
-    val = temp->value;
+Node *dequeue(Node *list) {
+    Node *temp = list;
+    list = list->next;
+    list->prev = NULL;
     free(temp);
-    return val;
+    return list;
 }
 
 int main() {
@@ -55,12 +54,12 @@ int main() {
     Node *n = init_node(10);
     
     for (int i = 0; i < 10; ++i) {
-        append(&n, (i%2) ? -i : i);
+        n = enqueue(n, (i%2) ? -i : i);
     }
 
     print_list(n);
-    pop_front(&n);
-    pop_front(&n);
+    n = dequeue(n);
+    n = dequeue(n);
     print_list(n);
     return 0;
 }
