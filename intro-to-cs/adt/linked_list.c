@@ -41,10 +41,13 @@ Node *append(Node *list, int val) {
 
 // ex.2
 Node *pop(Node *list) {
-    int val;
     Node *prev_node, *l = list;
 
     if (list == NULL) return NULL;
+    if (list->next == NULL) {
+        free(list);
+        return NULL;
+    }
 
     while (l->next != NULL) {
         prev_node = l;
