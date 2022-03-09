@@ -5,8 +5,8 @@
 _insertion_sort:                        ## @insertion_sort
 	.cfi_startproc
 ## %bb.0:
-	pushq	%rbp	; pushq - push 8 bytes to rbp register
-	.cfi_def_cfa_offset 16 	
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
@@ -15,7 +15,7 @@ _insertion_sort:                        ## @insertion_sort
 	movl	$0, -24(%rbp)
 LBB0_1:                                 ## =>This Loop Header: Depth=1
                                         ##     Child Loop BB0_3 Depth 2
-	movl	-24(%rbp), %eax				; move long
+	movl	-24(%rbp), %eax
 	cmpl	-12(%rbp), %eax
 	jge	LBB0_9
 ## %bb.2:                               ##   in Loop: Header=BB0_1 Depth=1
@@ -79,54 +79,4 @@ LBB0_9:
 	retq
 	.cfi_endproc
                                         ## -- End function
-	.globl	_main                           ## -- Begin function main
-	.p2align	4, 0x90
-_main:                                  ## @main
-	.cfi_startproc
-## %bb.0:
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset %rbp, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register %rbp
-	subq	$48, %rsp
-	leaq	l___const.main.arr(%rip), %rsi
-	movq	___stack_chk_guard@GOTPCREL(%rip), %rax
-	movq	(%rax), %rax
-	movq	%rax, -8(%rbp)
-	leaq	-48(%rbp), %rdi
-	movl	$40, %edx
-	callq	_memcpy
-	leaq	-48(%rbp), %rdi
-	movl	$10, %esi
-	callq	_insertion_sort
-	movq	___stack_chk_guard@GOTPCREL(%rip), %rax
-	movq	(%rax), %rax
-	movq	-8(%rbp), %rcx
-	cmpq	%rcx, %rax
-	jne	LBB1_2
-## %bb.1:
-	xorl	%eax, %eax
-	addq	$48, %rsp
-	popq	%rbp
-	retq
-LBB1_2:
-	callq	___stack_chk_fail
-	ud2
-	.cfi_endproc
-                                        ## -- End function
-	.section	__TEXT,__const
-	.p2align	4                               ## @__const.main.arr
-l___const.main.arr:
-	.long	1                               ## 0x1
-	.long	2                               ## 0x2
-	.long	3                               ## 0x3
-	.long	4                               ## 0x4
-	.long	5                               ## 0x5
-	.long	6                               ## 0x6
-	.long	7                               ## 0x7
-	.long	8                               ## 0x8
-	.long	9                               ## 0x9
-	.long	0                               ## 0x0
-
 .subsections_via_symbols

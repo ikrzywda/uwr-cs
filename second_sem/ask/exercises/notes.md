@@ -34,10 +34,11 @@ struct C {              // offsets:
 ```
 whereas Struct C is 16 bytes
 
-## volataile keyword:
+## volatile keyword:
 
 Signals to the compiler that a variable may be changed by other means than the code itself
-f.e. IO hardware that has access to the memory of the program
+f.e. IO hardware that has access to the memory of the program --- signaling that a variable will
+be externally mutated
 
 
 ## static keyword:
@@ -45,6 +46,11 @@ f.e. IO hardware that has access to the memory of the program
 * local variable: the variable will preserve its value across funciton calls (f.e. strtok)
 * global variable: restricts the variable to the file it has been declared in
 * function: restricts the use of a function to the file it has been declared in
+
+## restrict keyword:
+
+Promise that a section of memory will only be accessed through a pointer declared with 'restrict' keyword.
+It allows for optimising away additional loadings of memory pointed to by a pointer.
 
 ## C code to TAC
 

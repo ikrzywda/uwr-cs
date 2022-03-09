@@ -23,6 +23,12 @@ uint32_t copy_bit(int i, int k, int x) {
     return mask_i ^ x;
 }
 
+uint32_t copy_bit_no_if(int i, int k, uint32_t x) {
+    uint32_t tf_mask = ((1 << (32 - i)) & x) >> (32 - i);
+    x &= (uint32_t)(~(1 << (32 - k)));
+    return x & (~tf_mask << (32 - k));
+}
+
 // Kernighan's algorithm 
 // (https://www.techiedelight.com/brian-kernighans-algorithm-count-set-bits-integer/)
 int count_set_bits_kgh(uint32_t x) {
@@ -59,8 +65,5 @@ struct C {              // optimised struct A
 };
 
 int main() {
-    print_binary(copy_bit(30, 30, 0xFF));
-    printf("sizeof void*: %lu\n", sizeof(void*));
-    printf("sizeof int16t_t: %lu\n", sizeof(int16_t));
-    printf("%lu", sizeof(struct C));
+    print_binary(copy_bit_no_if(2, 31, 0xFFFFFF));
 }
