@@ -26,7 +26,7 @@ uint32_t copy_bit(int i, int k, int x) {
 uint32_t copy_bit_no_if(int i, int k, uint32_t x) {
     uint32_t tf_mask = ((1 << (32 - i)) & x) >> (32 - i);
     x &= (uint32_t)(~(1 << (32 - k)));
-    return x & (~tf_mask << (32 - k));
+    return x | (tf_mask << (32 - k));
 }
 
 // Kernighan's algorithm 
@@ -65,5 +65,7 @@ struct C {              // optimised struct A
 };
 
 int main() {
-    print_binary(copy_bit_no_if(2, 31, 0xFFFFFF));
+    print_binary(0xFFFFFFFE);
+    print_binary(copy_bit_no_if(32, 1, 0xFFFFFFFE));
+    print_binary(copy_bit_no_if(32, 2, 0xFFFFFFFE));
 }
