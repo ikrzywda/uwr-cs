@@ -10,22 +10,21 @@
       empty-set
   )))
 
-(define (in s)
+(define (in2 s)
   (lambda (el)
   (ormap (lambda (curr) (eq? curr el)) s)))
 
+(define (in a s)
+  (ormap (lambda (curr) (eq? curr a)) s))
+
 (define (union s t)
-  (define in-s (in s))
-  (define in-t (in t))
   (lambda (el)
-    (or (in-s el) (in-t el))
+    (or (in el s) (in el t))
   )
 )
 
 (define (intersection s t)
-  (define in-s (in s))
-  (define in-t (in t))
   (lambda (el)
-    (and (in-s el) (in-t el))
+    (and (in el s) (in el t))
   )
 )
