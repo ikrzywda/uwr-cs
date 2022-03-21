@@ -1,8 +1,8 @@
 #lang racket
 
 (define (maximum lst)
-    (foldl (lambda (max lst)
-        (if (<= max lst) lst max)
+    (foldl (lambda (max elem)
+        (if (<= max elem) elem max)
     )
     -inf.0
     lst

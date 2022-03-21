@@ -68,4 +68,5 @@ int main() {
     print_binary(0xFFFFFFFE);
     print_binary(copy_bit_no_if(32, 1, 0xFFFFFFFE));
     print_binary(copy_bit_no_if(32, 2, 0xFFFFFFFE));
+    print_binary(0x55555555);
 }

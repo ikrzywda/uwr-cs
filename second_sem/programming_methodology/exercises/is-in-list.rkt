@@ -5,6 +5,6 @@
     (cond
         [(empty? xs) #f]
         [(= x (first xs)) #t]
-        [else (elem? x (rest xs))]
+    [else (elem? x (rest xs))]
     )
 )
