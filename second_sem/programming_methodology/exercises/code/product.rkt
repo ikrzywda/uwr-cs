@@ -2,11 +2,4 @@
 
 (define (product lst)
     (if (null? lst) 0
-        (foldl (lambda (acc curr)
-            (* acc curr)
-        )
-        1
-        lst
-        )
-    )
-)
+        (foldl * 1 lst)))
