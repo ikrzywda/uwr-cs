@@ -24,19 +24,11 @@
 
 (check-true (tree? example-tree))
 
-
-(define (my-foldr f x xs)
-  (if (null? xs)
-      x
-      (f (car xs) (my-foldr f x (cdr xs)))))
-
 ;zad 2
 (define (fold-tree f x d)
   (if (leaf? d)
       x
       (f (fold-tree f x (node-r d)) (node-elem d) (fold-tree f x (node-l d)))))
-
-;(f (node-elem d) (f (fold-tree f x (node-l d)) (fold-tree f x (node-r d))))))
 
 (define (tree-sum t)
   (fold-tree + 0 t))
@@ -59,16 +51,67 @@
                                               b
                                               a)) (leaf) (node-r t))))
 
-; to nie dziala
 (define (flatten t)
-  (fold-tree (lambda (a b c)
-               (append (cons a (cons b null)) (cons c null))) null t))
+  (fold-tree (lambda (x y z) (append z (list y) x)) '() t))
 
+;zad 3
+(define (sorted? xs)
+  (cond [(null? (cdr xs)) #t]
+        [(<= (car xs) (car (cdr xs))) (sorted? (cdr xs))]
+        [else #f])
+  )
 
+(define (bst? t)
+  (sorted? (flatten t)))
 
+;dodać let
+(define (sum-paths t)
+  (define (sum t acc)
+    (if (leaf? t)
+        (leaf)
+        (node
+         (sum (node-l t) (+ acc (node-elem t)))
+         (+ acc (node-elem t))
+         (sum (node-r t) (+ acc (node-elem t))))))
+    (sum t 0))
+  
 
+(define (flatten2 t)
+  (if (leaf? t)
+      '()
+      (append (flatten2 (node-l t)) (list (node-elem t))  (flatten2 (node-r t)))))
 
+;zad 5
+(define (insert-bstM x t)
+  (cond [(leaf? t) (node (leaf) x (leaf))]
+        [(node? t)
+         (cond [(= x (node-elem t))
+                (node
+                 (node
+                  (node-l t)
+                  (node-elem t)
+                  (leaf))
+                 (node-elem t)
+                 (node-r t))]
+               [(< x (node-elem t))
+                (node
+                 (insert-bstM x (node-l t))
+                 (node-elem t)
+                 (node-r t))]
+               [else
+                (node
+                 (node-l t)
+                 (node-elem t)
+                 (insert-bstM x (node-r t)))])]))
 
+(define (travel xs t)
+     (if (null? xs)
+         t
+         (travel (cdr xs) (insert-bstM (car xs) t))))
+
+(define (treesort xs)
+ (flatten
+   (travel xs (leaf))))
 
 ; inna wersja tree height
 
