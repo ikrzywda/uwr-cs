@@ -14,7 +14,7 @@
                            2
                            (node (node (leaf) 3 (leaf))
                                  4
-                                 (node (leaf) 5 (leaf)))))
+                                 (node (leaf) 5 (node (leaf) 6 (leaf))))))
 
 (define t2 (node (node (leaf) 1 (leaf))
                            2
@@ -112,6 +112,37 @@
 (define (treesort xs)
  (flatten
    (travel xs (leaf))))
+
+;zad 6
+
+(define (minValue t)
+  (if (leaf? (node-l t))
+      (node-elem t)
+      (minValue (node-l t))))
+
+;dodac let
+(define (delete x t)
+  (cond [(leaf? t) (leaf)]
+        [(node? t)
+         (cond [(= x (node-elem t))
+                (cond [(and (leaf? (node-r t)) (leaf? (node-l t)) (leaf))]
+                      [(and (not (leaf? (node-r t))) (leaf? (node-l t)) (node-r t))]
+                      [(and (leaf? (node-r t)) (not (leaf? (node-l t))) (node-l t))]
+                      [else (node
+                             (node-l t)
+                             (minValue (node-r t))
+                             (delete (minValue (node-r t)) (node-r t))
+                             )])]
+               [(< x (node-elem t))
+                (node
+                 (delete x (node-l t))
+                 (node-elem t)
+                 (node-r t))]
+               [else
+                (node
+                 (node-l t)
+                 (node-elem t)
+                 (delete x (node-r t)))])]))
 
 ; inna wersja tree height
 
