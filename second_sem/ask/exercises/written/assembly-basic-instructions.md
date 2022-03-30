@@ -14,7 +14,7 @@
 | %rdx     | 3 |
 
 ### Evaluation of source operands with abovedescribed state of the machine
-
+```
 1. %rax = 0x100
 2. 0x110 = 0x13
 3. $0x108 = 0x108
@@ -24,9 +24,10 @@
 7. 0xFC(,%rcx. 4) = 0xFC + 4 * 1
 8. (%rax, %rdx, 8) = 0x100 + 24
 9. 265(%rcx, %rdx, 2) = 265 + 3 * 2
+'''
 
 ### Evaluation of operations with abovedescribed state of the machine 
-
+'''
 1. addq %rcx,(%rax) = 0xFF + 1 = 0x100 (saved @ 0x100)
 2. subq 16(%rax),%rdx = 0xFF + 16 - 3 (saved @ 0x103)
 3. shrq $4,%rax = 0x100 >> 4 = 0x8 (saved %rax)
@@ -35,3 +36,4 @@
 6. imulq 8(%rax) = 0xAB * 0x100 = 0xAB00 (saved @ 0x108)
 7. leaq 7(%rcx,%rcx,8),%rdx = 7 + 9 = 16 (saved @ %rdx)
 8. leaq 0xA(,%rdx,4),%rdx = 0xA + 12 = 16 (saved @ %rdx)
+''
