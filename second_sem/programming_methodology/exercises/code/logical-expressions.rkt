@@ -30,8 +30,8 @@
     [(conj? expr) (and (eval-prop vals (conj-l expr)) (eval-prop vals (conj-r expr)))]
     [(disj? expr) (or (eval-prop vals (disj-l expr)) (eval-prop vals (disj-r expr)))]))
 
-(define (init-values [variables : (Listof String)])
-  (map (λ (sym) (pair sym #t)) variables))
+(define (init-values variables truth-values)
+  (map2 (λ (sym val) (pair sym val)) variables truth-values))
 
 (define (permutation-of-lists n)
   (if (= 1 n)
@@ -39,29 +39,16 @@
       (append (map (λ (p) (cons #t p)) (permutation-of-lists (sub1 n)))
               (map (λ (p) (cons #f p)) (permutation-of-lists (sub1 n))))))
 
-(define (mutate-hash hash-table keys vals)
-  (unless (empty? keys)
-    (hash-set! hash-table (first keys) (first vals))
-    (mutate-hash hash-table (rest keys) (rest vals))))
-
-(define (apply-truth-values hash-table truth-values)
-  (let ([keys (hash-keys hash-table)]) (mutate-hash hash-table keys truth-values)))
-
-(define (check-expr-vals expr hash-table truth-values)
+(define (check-tautology expr truth-values)
   (cond
     [(empty? truth-values) #t]
-    [(eval-prop hash-table expr)
-     (apply-truth-values hash-table (first truth-values))
-     (check-expr-vals expr hash-table (rest truth-values))]
+    [(eval-prop (make-hash (init-values (free-vars expr) (first truth-values))) expr)
+     (check-tautology expr (rest truth-values))]
     [else #f]))
 
 (define (tautology? expr)
   (let ([vars (free-vars expr)])
-    (let ([hash
-           init-values
-           vars])
-      (let ([truth-values (permutation-of-lists (length vars))])
-        (check-expr-vals expr hash truth-values)))))
+    (let ([truth-values (permutation-of-lists (length vars))]) (check-tautology expr truth-values))))
 
 ;; TESTS
 
@@ -71,6 +58,7 @@
 
 (define test-expr-conj-t (conj (var "x") (var "y")))
 (define test-expr-disj-t (disj (var "x") (var "y")))
+(define tatuto (disj (var "x") (neg (var "x"))))
 
 (eval-prop test-vals test-expr-neg)
 
@@ -78,3 +66,4 @@
 (eval-prop test-vals test-expr-disj-t)
 
 (tautology? test-expr-conj-t)
+(tautology? tatuto)
